@@ -20,7 +20,11 @@
         <label for="blood_type">Blood Type:</label>
         <input type="text" id="blood_type" name="blood_type" required>
 
-        <button type="submit">Submit</button>
+        <button type="submit">Submit</button> <br> <br>
+
+
+        <label for="urgent">Add this case to the urgent list:</label>
+        <button type="button" id="urgent">Add to urgent list</button>
     </form>
 
     <h3>Results:</h3>
@@ -97,6 +101,12 @@
                 console.error("Error:", error);
                 alert("An error occurred. Please try again.");
             });
+        });
+
+        document.getElementById("urgent").addEventListener("click", function(event) {
+            event.preventDefault();  
+            window.location.href = "{% url 'description_case' %}";
+
         });
     </script>
 </body>
