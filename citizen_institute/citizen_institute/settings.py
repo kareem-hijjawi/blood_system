@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'accounts',  # Our custom app
     'institute_dashboard',
     'citizen_dashboard',
+    'urgent_cases',
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -63,6 +64,7 @@ TEMPLATES = [
             BASE_DIR / "accounts/templates",
             BASE_DIR / "institute_dashboard/templates",
             BASE_DIR / "citizen_dashboard/templates",  # ✅ Add this line
+            BASE_DIR / "urgent_cases/templates",
         ],
         'APP_DIRS': True,
         'OPTIONS': {
