@@ -4,12 +4,23 @@ from django.views import View
 from django.views.generic import TemplateView
 from django.http import JsonResponse
 from rest_framework.views import APIView  
+<<<<<<< HEAD
 from rest_framework.response import Response
 from rest_framework import status
 
 from .models import Hospital, KhaldaHospitalAppointment, BloodDonationAppointment
 
 from .serializers import BloodDonationAppointmentSerializer
+=======
+from .models import KhaldaHospitalAppointment
+from institute_dashboard.models import UrgentCaseList
+from citizen_dashboard.serializers import UrgentCaseListSerializer
+from rest_framework.response import Response
+from rest_framework import status
+
+
+
+>>>>>>> 3f828d538dede124e70f60cde78393f1375e4e2d
 
 
 class DashboardView(TemplateView):
@@ -51,6 +62,7 @@ class BloodTypeCheckAPIView(APIView):
                 return JsonResponse({"error": "Only Khalda Hospital appointments are supported."}, status=400)
         else:
             return JsonResponse({"error": "Please fill all fields."}, status=400)
+<<<<<<< HEAD
 
 
 
@@ -110,3 +122,21 @@ class BloodDonationAppointmentView(APIView):
             }
         }, status=201)
         
+=======
+        
+        
+
+class UrgentCaseListAPIView(APIView):
+    def get(self, request):
+        urgent_cases = UrgentCaseList.objects.all()
+        serializer = UrgentCaseListSerializer(urgent_cases, many=True)        
+        return JsonResponse({"urgent_cases": serializer.data}, safe=False, status=status.HTTP_200_OK)
+
+class UrgentListView(APIView):
+    def get(self, request):
+        urgent_cases = UrgentCaseList.objects.all()
+        return render(request, "citizen_dashboard/urgentlist.html", {"urgent_cases": urgent_cases})
+        
+
+
+>>>>>>> 3f828d538dede124e70f60cde78393f1375e4e2d

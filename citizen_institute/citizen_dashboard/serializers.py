@@ -1,5 +1,10 @@
 from rest_framework import serializers
+<<<<<<< HEAD
 from .models import KhaldaHospitalAppointment,BloodDonationAppointment
+=======
+from .models import KhaldaHospitalAppointment
+from institute_dashboard.models import UrgentCaseList
+>>>>>>> 3f828d538dede124e70f60cde78393f1375e4e2d
 
 class KhaldaHospitalAppointmentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -7,6 +12,7 @@ class KhaldaHospitalAppointmentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+<<<<<<< HEAD
 
 class BloodDonationAppointmentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,3 +32,9 @@ class BloodDonationAppointmentSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Please select the number of donation units.")
 
         return data
+=======
+class UrgentCaseListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UrgentCaseList
+        fields = "__all__"
+>>>>>>> 3f828d538dede124e70f60cde78393f1375e4e2d
