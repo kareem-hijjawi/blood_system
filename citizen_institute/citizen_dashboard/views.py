@@ -4,23 +4,13 @@ from django.views import View
 from django.views.generic import TemplateView
 from django.http import JsonResponse
 from rest_framework.views import APIView  
-<<<<<<< HEAD
-from rest_framework.response import Response
-from rest_framework import status
-
-from .models import Hospital, KhaldaHospitalAppointment, BloodDonationAppointment
-
-from .serializers import BloodDonationAppointmentSerializer
-=======
 from .models import KhaldaHospitalAppointment
 from institute_dashboard.models import UrgentCaseList
-from citizen_dashboard.serializers import UrgentCaseListSerializer
 from rest_framework.response import Response
 from rest_framework import status
 
 
 
->>>>>>> 3f828d538dede124e70f60cde78393f1375e4e2d
 
 
 class DashboardView(TemplateView):
@@ -62,7 +52,6 @@ class BloodTypeCheckAPIView(APIView):
                 return JsonResponse({"error": "Only Khalda Hospital appointments are supported."}, status=400)
         else:
             return JsonResponse({"error": "Please fill all fields."}, status=400)
-<<<<<<< HEAD
 
 
 
@@ -79,10 +68,11 @@ class BloodDonationAppointmentView(APIView):
         appointment_date = request.POST.get('appointment_date')
         blood_type = request.POST.get('blood_type')
         chronic_disease = request.POST.get('chronic_disease')
-        donated_last_two_months = request.POST.get('donated_last_two_months', False)
-        donation_units = request.POST.get('donation_units', None)
+        donated_last_two_months = request.POST.get('donated_last_two_months') == 'on'
+        donation_units = request.POST.get('donation_units')
+        donation_units = int(donation_units) if donation_units else None
 
-        # 🔹 Check if all required fields are provided
+        # Check if all required fields are provided
         if not all([city, hospital_name, citizen_name, email, appointment_date, blood_type]):
             return JsonResponse({"error": "Please fill all fields."}, status=400)
 
@@ -95,7 +85,7 @@ class BloodDonationAppointmentView(APIView):
                 appointment_date=appointment_date
             )
         else:
-            # 🔹 Fetch the hospital instance
+            # Fetch the hospital instance
             hospital_instance = get_object_or_404(Hospital, name=hospital_name)
 
             appointment = BloodDonationAppointment.objects.create(
@@ -115,28 +105,10 @@ class BloodDonationAppointmentView(APIView):
             "appointment": {
                 "id": appointment.id,
                 "city": appointment.city,
-                "hospital": hospital_name,  # ✅ Keep the hospital name in response
+                "hospital": hospital_name,  #  Keep the hospital name in response
                 "citizen_name": appointment.citizen_name,
                 "email": appointment.email,
                 "appointment_date": str(appointment.appointment_date)
             }
         }, status=201)
         
-=======
-        
-        
-
-class UrgentCaseListAPIView(APIView):
-    def get(self, request):
-        urgent_cases = UrgentCaseList.objects.all()
-        serializer = UrgentCaseListSerializer(urgent_cases, many=True)        
-        return JsonResponse({"urgent_cases": serializer.data}, safe=False, status=status.HTTP_200_OK)
-
-class UrgentListView(APIView):
-    def get(self, request):
-        urgent_cases = UrgentCaseList.objects.all()
-        return render(request, "citizen_dashboard/urgentlist.html", {"urgent_cases": urgent_cases})
-        
-
-
->>>>>>> 3f828d538dede124e70f60cde78393f1375e4e2d

@@ -21,13 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
     path('institute/', include('institute_dashboard.urls')),
-<<<<<<< HEAD
     path('dashboard/', include('citizen_dashboard.urls')),
     
-    
          ]
-=======
-    path('citizen/', include('citizen_dashboard.urls')),
-    ]
->>>>>>> 3f828d538dede124e70f60cde78393f1375e4e2d
 

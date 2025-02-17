@@ -11,14 +11,6 @@ class KhaldaHospitalAppointment(models.Model):
         return f"{self.citizen_name} - {self.appointment_date}"
 
 
-
-class Hospital(models.Model):
-    name = models.CharField(max_length=255)
-    city = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
-
 class BloodDonationAppointment(models.Model):
     BLOOD_TYPES = [
         ('A+', 'A+'),
@@ -56,7 +48,6 @@ class BloodDonationAppointment(models.Model):
     donated_last_two_months = models.BooleanField(default=False)
     donation_units = models.CharField(max_length=1, choices=DONATION_UNITS, null=True, blank=True)
     appointment_date = models.DateField()
-    hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE)
 
     created_at = models.DateTimeField(auto_now_add=True)
 
