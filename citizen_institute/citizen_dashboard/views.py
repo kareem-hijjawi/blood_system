@@ -4,7 +4,12 @@ from django.views import View
 from django.views.generic import TemplateView
 from django.http import JsonResponse
 from rest_framework.views import APIView  
-from .models import KhaldaHospitalAppointment
+from rest_framework.response import Response
+from rest_framework import status
+
+from .models import Hospital, KhaldaHospitalAppointment, BloodDonationAppointment
+
+from .serializers import BloodDonationAppointmentSerializer
 
 
 class DashboardView(TemplateView):
@@ -46,3 +51,62 @@ class BloodTypeCheckAPIView(APIView):
                 return JsonResponse({"error": "Only Khalda Hospital appointments are supported."}, status=400)
         else:
             return JsonResponse({"error": "Please fill all fields."}, status=400)
+
+
+
+
+class BloodDonationAppointmentView(APIView):
+    def get(self, request):
+        return render(request, "citizen_dashboard/donation_appointment.html")
+
+    def post(self, request):
+        city = request.POST.get('city')
+        hospital_name = request.POST.get('hospital')
+        citizen_name = request.POST.get('citizen_name')
+        email = request.POST.get('email')
+        appointment_date = request.POST.get('appointment_date')
+        blood_type = request.POST.get('blood_type')
+        chronic_disease = request.POST.get('chronic_disease')
+        donated_last_two_months = request.POST.get('donated_last_two_months', False)
+        donation_units = request.POST.get('donation_units', None)
+
+        # 🔹 Check if all required fields are provided
+        if not all([city, hospital_name, citizen_name, email, appointment_date, blood_type]):
+            return JsonResponse({"error": "Please fill all fields."}, status=400)
+
+        
+        if hospital_name == "Khalda Hospital":
+            appointment = KhaldaHospitalAppointment.objects.create(
+                city=city,
+                citizen_name=citizen_name,
+                email=email,
+                appointment_date=appointment_date
+            )
+        else:
+            # 🔹 Fetch the hospital instance
+            hospital_instance = get_object_or_404(Hospital, name=hospital_name)
+
+            appointment = BloodDonationAppointment.objects.create(
+                citizen_name=citizen_name,
+                email=email,
+                city=city,
+                hospital=hospital_instance,
+                appointment_date=appointment_date,
+                blood_type=blood_type,
+                chronic_disease=chronic_disease,
+                donated_last_two_months=donated_last_two_months,
+                donation_units=donation_units
+            )
+
+        return JsonResponse({
+            "message": "Your blood donation appointment has been reserved successfully!",
+            "appointment": {
+                "id": appointment.id,
+                "city": appointment.city,
+                "hospital": hospital_name,  # ✅ Keep the hospital name in response
+                "citizen_name": appointment.citizen_name,
+                "email": appointment.email,
+                "appointment_date": str(appointment.appointment_date)
+            }
+        }, status=201)
+        
