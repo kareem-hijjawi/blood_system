@@ -5,11 +5,8 @@ from django.views.generic import TemplateView
 from django.http import JsonResponse
 from rest_framework.views import APIView  
 from .models import KhaldaHospitalAppointment
-<<<<<<< HEAD
-=======
 from institute_dashboard.models import UrgentCaseList
 from citizen_dashboard.serializers import UrgentCaseListSerializer
->>>>>>> 86a4da721b2da833182a8830016c8f2cfd18f5d8
 from rest_framework.response import Response
 from rest_framework import status
 
