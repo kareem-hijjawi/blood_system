@@ -5,6 +5,13 @@ from django.views.generic import TemplateView
 from django.http import JsonResponse
 from rest_framework.views import APIView  
 from .models import KhaldaHospitalAppointment
+from institute_dashboard.models import UrgentCaseList
+from citizen_dashboard.serializers import UrgentCaseListSerializer
+from rest_framework.response import Response
+from rest_framework import status
+
+
+
 
 
 class DashboardView(TemplateView):
@@ -46,3 +53,19 @@ class BloodTypeCheckAPIView(APIView):
                 return JsonResponse({"error": "Only Khalda Hospital appointments are supported."}, status=400)
         else:
             return JsonResponse({"error": "Please fill all fields."}, status=400)
+        
+        
+
+class UrgentCaseListAPIView(APIView):
+    def get(self, request):
+        urgent_cases = UrgentCaseList.objects.all()
+        serializer = UrgentCaseListSerializer(urgent_cases, many=True)        
+        return JsonResponse({"urgent_cases": serializer.data}, safe=False, status=status.HTTP_200_OK)
+
+class UrgentListView(APIView):
+    def get(self, request):
+        urgent_cases = UrgentCaseList.objects.all()
+        return render(request, "citizen_dashboard/urgentlist.html", {"urgent_cases": urgent_cases})
+        
+
+
