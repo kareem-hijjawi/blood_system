@@ -5,7 +5,6 @@ from django.views.generic import TemplateView
 from django.http import JsonResponse
 from rest_framework.views import APIView  
 from .models import KhaldaHospitalAppointment
-from institute_dashboard.models import UrgentCaseList
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -111,3 +110,4 @@ class BloodDonationAppointmentView(APIView):
                 "appointment_date": str(appointment.appointment_date)
             }
         }, status=201)
+        
